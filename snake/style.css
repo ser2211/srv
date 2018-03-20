@@ -1,0 +1,22 @@
+td {
+    border: 1px solid lightgray;
+    width: 10px;
+    height: 10px;
+}
+
+.mypole {
+	width: 50%;
+	display: inline-block;
+}
+
+.legend {
+	float: right;
+	display: inline-block;
+}
+
+.mycell {
+    border: 1px solid lightgray;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}

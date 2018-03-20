@@ -1,0 +1,30 @@
+{
+  "name": "proba",
+  "version": "1.0.0",
+  "description": "my_first_project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ser2211/srv.git"
+  },
+  "keywords": [
+    "first"
+  ],
+  "author": "ser22",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ser2211/srv/issues"
+  },
+  "homepage": "https://github.com/ser2211/srv#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
+  }
+}

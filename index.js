@@ -1,12 +1,14 @@
-let http=require('http');
-http.createServer(function(req,res){
-	console.log(req.url);
-	console.log(req.method);
-	console.log(req.headers);
-	res.writeHead(200,{
-		'content-type': 'application/json'
+var express = require('express')
+var app = express()
+var fs = require('fs')
+
+app.use("/snake", express.static(__dirname + "/snake"));
+app.get('/score', function (req, res) {
+	fs.readFile('records.json', (err, data) => {
+	  if (err) throw err;
+	  res.send(JSON.parse(data));
 	});
-	let data={ mydata: "zdlfkbnasdlfgn", a: 0 }
-	res.end(JSON.stringify(data))
-	//res.end();
-}).listen(8000);
+	
+})
+
+app.listen(3000)
