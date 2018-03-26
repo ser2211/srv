@@ -24,6 +24,7 @@ game.over = function() {
     $.post( myScores, {score: this.scores, name: this.username}, function( data ) {
         //alert( "Data Loaded: " + data );
         let mystr="";
+        console.log('Очки = '+this.scores);
         //mystr += `<li>Ваши достижения:  ${data.score}</li>`;
         //document.getElementById('scores').innerHTML = mystr;
     });
@@ -31,7 +32,7 @@ game.over = function() {
 }
 
 game.myquery = function() {
-    var flickerAPI = "/score";
+/*    var flickerAPI = "/score";
     $.getJSON( flickerAPI, function(json) {
         let mystr="";
         for(let winners in json) {
@@ -40,13 +41,13 @@ game.myquery = function() {
         };
         document.getElementById('scores').innerHTML = mystr;
     })
-
+*/
     var myScores = "/myscores";
     $.post( myScores, {name: this.username}, function( data ) {
         //alert( "Data Loaded: " + data );
         let mystr="";
         mystr += `<li>Ваши достижения:  ${data.score}</li>`;
-        let myscore = 1 + data.score;
+        let myscore = data.score;
         this.scores = myscore;
         document.getElementById('scores').innerHTML = mystr;
     });
@@ -140,6 +141,7 @@ game.next_step = function() {
         debug = "hx=" + head['x'] + ", hy=" + head['y'] + ", nx=" + neck['x'] + ", ny=" + neck['y'] + ", dx=" + vector['dx'] + ", dy=" + vector['dy'];
         //console.log(debug);
         if ((head['x'] + vector['dx'] == neck['x']) && (head['y'] + vector['dy'] == neck['y'])) {
+            this.scores += this.snake.length;
             this.over();
             alert("Вы проиграли1!");
             window.location = "index.html";
@@ -156,6 +158,7 @@ game.next_step = function() {
     console.log(debug);
     //alert("Новое положение головы");
     if (game.check_snake(newx,newy) == 0) {
+        this.scores += this.snake.length;
         this.over();
         alert("Вы проиграли2!");
         window.location = "index.html";
@@ -163,7 +166,7 @@ game.next_step = function() {
     else if (this.pole[newx][newy] == 3) {
         // Проверка, что змейка не врезалась в камень
         debug = "hx=" + head['x'] + ", hy=" + head['y'] + ", nx=" + neck['x'] + ", ny=" + neck['y'] + ", dx=" + vector['dx'] + ", dy=" + vector['dy'];
-        //console.log(debug);
+        this.scores += this.snake.length;
         this.over();
         alert("Вы проиграли2!");
         window.location = "index.html";
@@ -180,6 +183,7 @@ game.next_step = function() {
         last = this.num_of_snake;
         // Если змейка состоит из 1 элемента, она уменьшается и пользователь проигрывает
         if (last == 1) {
+            this.scores += this.snake.length;
             this.over();
             alert('Вы проиграли3!');
             window.location = "index.html";
