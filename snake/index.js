@@ -15,19 +15,41 @@ let game = {
     current_interval: 1500,
     timerId: 0,
     pause: 0,
+    username: "",
+    scores: 0
+}
+
+game.over = function() {
+    var myScores = "/savescores";
+    $.post( myScores, {score: this.scores, name: this.username}, function( data ) {
+        //alert( "Data Loaded: " + data );
+        let mystr="";
+        //mystr += `<li>Ваши достижения:  ${data.score}</li>`;
+        //document.getElementById('scores').innerHTML = mystr;
+    });
+
 }
 
 game.myquery = function() {
     var flickerAPI = "/score";
     $.getJSON( flickerAPI, function(json) {
-        var mystr;
+        let mystr="";
         for(let winners in json) {
             //console.log(winners + "=" + json[winners]);
             mystr += `<li>${winners} = ${json[winners]}</li>`;
-        }; 
+        };
         document.getElementById('scores').innerHTML = mystr;
-  })
+    })
 
+    var myScores = "/myscores";
+    $.post( myScores, {name: this.username}, function( data ) {
+        //alert( "Data Loaded: " + data );
+        let mystr="";
+        mystr += `<li>Ваши достижения:  ${data.score}</li>`;
+        let myscore = 1 + data.score;
+        this.scores = myscore;
+        document.getElementById('scores').innerHTML = mystr;
+    });
 }
 
 game.random_point = function() {
@@ -118,8 +140,8 @@ game.next_step = function() {
         debug = "hx=" + head['x'] + ", hy=" + head['y'] + ", nx=" + neck['x'] + ", ny=" + neck['y'] + ", dx=" + vector['dx'] + ", dy=" + vector['dy'];
         //console.log(debug);
         if ((head['x'] + vector['dx'] == neck['x']) && (head['y'] + vector['dy'] == neck['y'])) {
-            //document.getElementById('debug').textContent = debug;
-            alert("Вы проиграли1!" + debug);
+            this.over();
+            alert("Вы проиграли1!");
             window.location = "index.html";
         }
     }
@@ -134,14 +156,16 @@ game.next_step = function() {
     console.log(debug);
     //alert("Новое положение головы");
     if (game.check_snake(newx,newy) == 0) {
-        alert("Вы проиграли2!" + debug);
+        this.over();
+        alert("Вы проиграли2!");
         window.location = "index.html";
     }
     else if (this.pole[newx][newy] == 3) {
         // Проверка, что змейка не врезалась в камень
         debug = "hx=" + head['x'] + ", hy=" + head['y'] + ", nx=" + neck['x'] + ", ny=" + neck['y'] + ", dx=" + vector['dx'] + ", dy=" + vector['dy'];
-        console.log(debug);
-        alert("Вы проиграли2!" + debug);
+        //console.log(debug);
+        this.over();
+        alert("Вы проиграли2!");
         window.location = "index.html";
     } else if (this.pole[newx][newy] == 1) {
         // Змейка съела зеленую еду и увеличивается
@@ -154,6 +178,12 @@ game.next_step = function() {
     } else if (this.pole[newx][newy] == 2) {
         // Змейка съела красную еду и уменьшается
         last = this.num_of_snake;
+        // Если змейка состоит из 1 элемента, она уменьшается и пользователь проигрывает
+        if (last == 1) {
+            this.over();
+            alert('Вы проиграли3!');
+            window.location = "index.html";
+        }
         chain = this.snake[last - 1];
         document.getElementById('cell' + chain['x'] + `-` + chain['y']).style.backgroundColor = this.colors[0];
         this.pole[chain.x][chain.y] = 0;
@@ -294,5 +324,8 @@ game.run = function() {
 	    game.next_step();
 	}, game.current_interval);
 }
-
+let title = "Введите имя пользователя:";
+let defname = "user";
+result = prompt(title, defname);
+game.username = result;
 game.run();
