@@ -64,7 +64,8 @@ app.post('/savescores', function (req, res) {
 	  //res.send({score: highScores});
 	  json = JSON.stringify(mydata);
 	  console.log(json);
-	  fs.writeFileSync('records.json', json, 'utf8');
+	  //fs.writeFileSync('records.json', json, 'utf8');
+	  fs.writeFile('records.json', json);
 	});
 	
 })
