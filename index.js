@@ -22,7 +22,7 @@ app.post('/myscores', function (req, res) {
 	  //console.log(req.body);
 	  user = req.body;
 	  if (user.name in mydata) {
-	  	highScores += mydata[user.name];
+	  	highScores = mydata[user.name];
 	  }
 	  else {
 	  	mydata[user.name] = 0;
@@ -54,7 +54,7 @@ app.post('/savescores', function (req, res) {
 	  user = req.body;
 	  if (user.name in mydata) {
 	  	highScores = mydata[user.name];
-	  	newScore += user.score;
+	  	newScore = user.score;
 	  	if (newScore > highScores) mydata[user.name] = newScore;
 	  }
 	  else {
